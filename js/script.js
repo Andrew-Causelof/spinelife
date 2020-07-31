@@ -43,11 +43,13 @@ function init() {
     pmremGenerator = new THREE.PMREMGenerator( renderer );
     pmremGenerator.compileEquirectangularShader();
 
-    loader();   // loading 3d models
-    RGBELoader();  // loading hdr
     spineSprites(); // creating sprites for bones
     spriteVisible(false); // hiding sprites
     creatingLablesForBones();
+
+    loader();   // loading 3d models
+    RGBELoader();  // loading hdr
+
 
 
 	controls = new THREE.OrbitControls( camera, renderer.domElement );

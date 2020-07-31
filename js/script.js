@@ -7,6 +7,8 @@ var pmremGenerator, envMap, backgroundColor;  // clinic environement - global va
 var  absorbers, cord , bones;
 // sprites for coloredspine
 var c_sprite, t_sprite, l_sprite, s_sprite, k_sprite;
+// labeling bones
+var boneLables = [];
 //
 container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -45,6 +47,8 @@ function init() {
     RGBELoader();  // loading hdr
     spineSprites(); // creating sprites for bones
     spriteVisible(false); // hiding sprites
+
+    creatingLablesForBones();
 
 
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -153,6 +157,8 @@ function range() {
    // moving step
     var sliding = range.value / 15;
 
+    console.log(range.value);
+
 // centred bones, absorbers and cord
     if (range.value > 40 && range.value < 60) {
 
@@ -161,6 +167,7 @@ function range() {
         absorbers.visible    = true; 
         cord.visible         = true;
         spriteVisible(false);
+        boneLableVisible(true);
 
         // moving part
         moveToZero();
@@ -174,6 +181,7 @@ function range() {
         cord.visible         = true;
         bones.visible        = true;
         spriteVisible(false);
+        boneLableVisible(false);
          
         // moving part
         moveToZero();
@@ -186,6 +194,7 @@ function range() {
         coloredSpine.visible = false;
         bones.visible        = false;
         spriteVisible(false);
+        boneLableVisible(false);
 
        // moving part
         moveToZero();
@@ -205,7 +214,8 @@ function range() {
 
     if (range.value > 60 ) {
 
-        spriteVisible(false); 
+        spriteVisible(false);
+        boneLableVisible(false); 
         bones.visible        = true;
         absorbers.visible    = true; 
         cord.visible         = true;
@@ -335,7 +345,63 @@ const elem = document.querySelector('#screenshot');
     scene.add( k_sprite );
     //--------------------------------------------------
     
- }  
+ } 
+
+ function creatingLablesForBones(){
+
+    boneLables.push( makeLableForBone("textures/lables/c1.png", 0, 13.8, 4) );
+    boneLables.push( makeLableForBone("textures/lables/c2.png", 0, 12.8, 4) );
+    boneLables.push( makeLableForBone("textures/lables/c3.png", 0, 11.9, 4) );
+    boneLables.push( makeLableForBone("textures/lables/c4.png", 0, 11.2, 4) );
+    boneLables.push( makeLableForBone("textures/lables/c5.png", 0, 10.4, 3.9) );
+    boneLables.push( makeLableForBone("textures/lables/c6.png", 0, 9.6, 3.8) );
+    boneLables.push( makeLableForBone("textures/lables/c7.png", 0, 8.9, 3.6) );
+    boneLables.push( makeLableForBone("textures/lables/d1.png", 0, 8.2, 3.4) );
+    boneLables.push( makeLableForBone("textures/lables/d2.png", 0, 7.4, 3.1) );
+    boneLables.push( makeLableForBone("textures/lables/d3.png", 0, 6.6, 2.9) );
+    boneLables.push( makeLableForBone("textures/lables/d4.png", 0, 5.7, 2.6) );
+    boneLables.push( makeLableForBone("textures/lables/d5.png", 0, 4.7, 2.4) );
+    boneLables.push( makeLableForBone("textures/lables/d6.png", 0, 3.6, 2.4) );
+    boneLables.push( makeLableForBone("textures/lables/d7.png", 0, 2.5, 2.5) );
+    boneLables.push( makeLableForBone("textures/lables/d8.png", 0, 1.3, 2.7) );
+    boneLables.push( makeLableForBone("textures/lables/d9.png", 0, 0.1, 2.9) );
+    boneLables.push( makeLableForBone("textures/lables/d10.png", 0, -1.1, 3.2) );
+    boneLables.push( makeLableForBone("textures/lables/d11.png", 0, -2.6, 3.5) );
+    boneLables.push( makeLableForBone("textures/lables/d12.png", 0, -4.0, 3.9) );
+    boneLables.push( makeLableForBone("textures/lables/l1.png", 0, -5.4, 4.4) );
+    boneLables.push( makeLableForBone("textures/lables/l2.png", 0, -7.1, 4.6) );
+    boneLables.push( makeLableForBone("textures/lables/l3.png", 0, -8.6, 4.7) );
+    boneLables.push( makeLableForBone("textures/lables/l4.png", 0, -10.2, 4.6) );
+    boneLables.push( makeLableForBone("textures/lables/l5.png", 0, -11.9, 4.3) );
+    boneLables.push( makeLableForBone("textures/lables/s.png", 0, -13.9, 3.3) );
+    boneLables.push( makeLableForBone("textures/lables/Co.png", 0, -16.9, 1.0) );
+
+    boneLables.forEach( function (lable) {
+        scene.add( lable );
+    });
+    
+    render();
+
+ }
+
+ function makeLableForBone(path, x,y,z){
+
+    var spriteMap = new THREE.TextureLoader().load( path );
+    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
+    var lable = new THREE.Sprite( spriteMaterial );
+    lable.position.set(x,y,z);
+    lable.scale.set(0.5, 0.5, 0);
+    
+    return lable;
+ }
+
+ function boneLableVisible(boolean){
+     boneLables.forEach( function (lable) {
+        lable.visible = boolean;
+     });
+
+    render(); 
+ }
 
 
 function makeTextSprite( message, parameters )
@@ -357,7 +423,6 @@ function makeTextSprite( message, parameters )
 	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
 		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
 
-	var spriteAlignment = THREE.SpriteAlignment;
 		
 	var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
@@ -381,7 +446,8 @@ function makeTextSprite( message, parameters )
 	// text color
 	context.fillStyle = "rgba(139, 0, 0, 1.0)";
 
-	context.fillText( message, borderThickness, fontsize + borderThickness);
+//	context.fillText( message, borderThickness, fontsize + borderThickness);
+context.fillText( message, borderThickness, fontsize);
 	
 	// canvas contents will be used for a texture
 	var texture = new THREE.Texture(canvas) 
@@ -390,7 +456,8 @@ function makeTextSprite( message, parameters )
 	var spriteMaterial = new THREE.SpriteMaterial( 
 		{ map: texture } );
 	var sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set(100,50,1.0);
+    //sprite.scale.set(100,50,1.0);
+    //sprite.scale.set(100,50,1.0);
 	return sprite;	
 }
 

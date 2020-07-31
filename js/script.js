@@ -47,7 +47,6 @@ function init() {
     RGBELoader();  // loading hdr
     spineSprites(); // creating sprites for bones
     spriteVisible(false); // hiding sprites
-
     creatingLablesForBones();
 
 
@@ -156,8 +155,6 @@ function range() {
     var range = document.getElementById('range');
    // moving step
     var sliding = range.value / 15;
-
-    console.log(range.value);
 
 // centred bones, absorbers and cord
     if (range.value > 40 && range.value < 60) {

@@ -3,19 +3,10 @@ var camera, scene, renderer;
 
 // so defenetly it needs to do configurator right here 
 var pmremGenerator, envMap, backgroundColor;  // clinic environement - global variables
-//var absorberColor = new THREE.MeshMatcapMaterial({ color: 0x178FFF });
-//var boneColor = new THREE.MeshMatcapMaterial({ color: 0xeae8dc });
-
 //var bones, absorbers, cord;
-var  absorbers, cord;
-var lumbar, thoracic, cervical, sacrum, coloredSpine;  
-//
+var  absorbers, cord , bones;
+// sprites for coloredspine
 var c_sprite, t_sprite, l_sprite, s_sprite, k_sprite;
-//
-var  boneSprites = [];
-//
- // temporary!!!!!!
- var C1, C2, C3, C4, C5, C6, C7, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, L1, L2, L3, L4, L5, S, Co;
 //
 container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -26,10 +17,10 @@ camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight
  camera.position.set( 0, 0, 40 ); //use for sprites only
 scene = new THREE.Scene();
 
+// background color in HEX
+var backgroundBlue = new THREE.Color(0x485770); //Global variable for Blue background
+var backgroundBlack = new THREE.Color(0x000000); //Global variable for Black background
 
-backgroundBlue = new THREE.Color(0x485770); //Global variable for Blue background
-backgroundBlack = new THREE.Color(0x000000); //Global variable for Black background
-backgroundSwitcher = 0;
 
 
 
@@ -54,8 +45,6 @@ function init() {
     RGBELoader();  // loading hdr
     spineSprites(); // creating sprites for bones
     spriteVisible(false); // hiding sprites
-
-    //labelingBones(); // labeling bones
 
 
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -82,6 +71,7 @@ function onWindowResize() {
 
 // simply render function
 function render() {
+
 	renderer.render( scene, camera );
 }
 // loading clinic HDR texture, but dont set up scene background
@@ -96,66 +86,39 @@ function RGBELoader() {
 }
 
 // Loading bones , absorbers and cord as 3 separate objects
-// it could be merged in one , but file will be weight amount of 3 files, and code will be not readable
-
-
+// it could be merged all in one , but file will weight as  amount of 3 files, and code  not readable
 function loader() {
 
     var loader = new THREE.GLTFLoader().setPath( 'models/' );
-    var bones;
 
-    loader.load( 'bones_texture_3.glb', function ( glb ) {
+    loader.load( 'bones.glb', function ( glb ) {
         glb.scene.traverse( function ( child ) {
             if ( child.isMesh ) {
                 child.castShadow = true;
-                //child.material = boneColor;
             }
         } );
-        bones = glb.scene;  
-        console.log(bones);                         
-        bones.scale.set( 0.06, 0.06, 0.06 );
-        bones.position.y = -18;
 
-      // making clone for colored spine
-      
+      bones = glb.scene;                       
+      bones.scale.set( 0.06, 0.06, 0.06 );
+      bones.position.y = -18;
+      scene.add ( bones );
+
+      // making clone for colored spine  
       coloredSpine = bones.clone();
       coloredSpine.visible = false;
       scene.add ( coloredSpine );
       createColoredSpine(); // painting spine 
-
-     //поясничный отдел L1-L5
-      lumbar = bones.clone();
-      lumbar.children = lumbar.children.slice( 0, 5 );
-      scene.add( lumbar );
-    
-      //грудной отдел
-      thoracic = bones.clone();
-      thoracic.children = thoracic.children.slice( 5, 17 );
-      scene.add( thoracic );
-
-      //шейный отдел 
-      cervical = bones.clone();
-      cervical.children= cervical.children.slice( 17, 24 );
-      scene.add( cervical );
-
-      // копчик
-      sacrum = bones.clone();
-      sacrum.children= sacrum.children.slice( 24, 26 );
-      scene.add ( sacrum );
-
       render();
 
     } );
     
     // Downloading absorbers
 
-     loader.load( 'absorbers_2.glb', function ( glb ) {
+     loader.load( 'absorbers.glb', function ( glb ) {
          
              glb.scene.traverse( function ( child ) {
                  if ( child.isMesh ) {
-                    // child.castShadow = true;
-                     //child.material = absorberColor;
-                     //child.material = boneColor;
+                    child.castShadow = true;
                  }
              } );
              absorbers = glb.scene;                           
@@ -167,12 +130,11 @@ function loader() {
     
 
     // Downloading human cord
-    loader.load( 'cord_3.glb', function ( glb ) {
+    loader.load( 'cord.glb', function ( glb ) {
          
         glb.scene.traverse( function ( child ) {
             if ( child.isMesh ) {
                 child.castShadow = true;
-              //  child.material = new THREE.MeshStandardMaterial({ color: 0xffc107 });;
             }
         } );
         cord = glb.scene;                           
@@ -181,129 +143,91 @@ function loader() {
         scene.add( cord );
         render();	
     } );
-
-    //--------------custom-----------------------------
     
 }
 
-
-// so here is written logic for range
+//logic for range
 function range() {
 
     var range = document.getElementById('range');
-
-   // console.log(range.value);
-
+   // moving step
     var sliding = range.value / 15;
 
 // centred bones, absorbers and cord
     if (range.value > 40 && range.value < 60) {
-        bonesMoving(0);
-        absorbers.position.x = 0;
-        cord.position.x      = 0;
 
+        coloredSpine.visible = false; 
+        bones.visible        = true;
+        absorbers.visible    = true; 
+        cord.visible         = true;
         spriteVisible(false);
-        bonesVisible(true); 
-        absorbers.visible = true; 
-        cord.visible      = true;
+
+        // moving part
+        moveToZero();
+
     }
-    if (range.value < 40 && range.value > 25) {
-        absorbers.visible = false;
-        cord.visible      = true;
-        spriteVisible(false);
-        bonesVisible(true);    
 
-        bonesMoving(0);
-        absorbers.position.x = 0;
-        cord.position.x      = 0;
+    if (range.value < 40 && range.value > 25) {
+
+        coloredSpine.visible = false;
+        absorbers.visible    = false;
+        cord.visible         = true;
+        bones.visible        = true;
+        spriteVisible(false);
+         
+        // moving part
+        moveToZero();
     }
  
     if (range.value > 15 && range.value <= 25 ){
 
-        bonesMoving(0);
-        absorbers.position.x = 0;
-        cord.position.x      = 0;
-
-        cord.visible      = true;
-        absorbers.visible = false;
-        bonesVisible(false); 
-        spriteVisible(false);
+        cord.visible         = true;
+        absorbers.visible    = false;
         coloredSpine.visible = false;
+        bones.visible        = false;
+        spriteVisible(false);
+
+       // moving part
+        moveToZero();
+        
     }
 
     if (range.value <= 15) {
 
-        bonesVisible(false);
+        bones.visible     = false;
         cord.visible      = false;
         absorbers.visible = false;
+        coloredSpine.visible = true;
 
         spriteVisible(true); 
-    }
 
+    }
 
     if (range.value > 60 ) {
 
         spriteVisible(false); 
-        bonesVisible(true); 
-        absorbers.visible = true; 
-        cord.visible      = true;
-
-        bonesMoving(range.value / 8 - sliding);
-        absorbers.position.x = range.value / 18 - sliding;
-        cord.position.x = - sliding;
-    }
-
-    render();
-}
-
-// managing visible options for bones
-function bonesVisible(boolean) {
-    if (boolean == false) {
-        lumbar.visible       = false;
-        thoracic.visible     = false;
-        cervical.visible     = false;
-        sacrum.visible       = false;
-        coloredSpine.visible = true;
-    } else {
-        lumbar.visible       = true;
-        thoracic.visible     = true;
-        cervical.visible     = true;
-        sacrum.visible       = true;
+        bones.visible        = true;
+        absorbers.visible    = true; 
+        cord.visible         = true;
         coloredSpine.visible = false;
+        // moving part
+        bones.position.x     = range.value / 8 - sliding;
+        absorbers.position.x = range.value / 18 - sliding;
+        cord.position.x      = - sliding;
     }
-    render();
-}
-// moving bones at X position
-function bonesMoving(x) {
-    lumbar.position.x   = x;
-    thoracic.position.x = x;
-    cervical.position.x = x;
-    sacrum.position.x   = x;
+
     render();
 }
 
-// managing visible otions for sprites
-function spriteVisible(boolean) {
-    if (boolean == false) {
-        c_sprite.visible  = false;
-        t_sprite.visible  = false;
-        l_sprite.visible  = false;
-        s_sprite.visible  = false;
-        k_sprite.visible  = false;
-    } else {
-        c_sprite.visible  = true;
-        t_sprite.visible  = true;
-        l_sprite.visible  = true;
-        s_sprite.visible  = true;
-        k_sprite.visible  = true;
-    }
+function moveToZero(){
+
+    bones.position.x     = 0;
+    absorbers.position.x = 0;
+    cord.position.x      = 0;
+
 }
 
-//--------------BUTTONS BEGIN--------------------------
 //------------- making screenshot -------------------
-//generaly this function was implemeneted to compare the difference between different textures,
-// aplying to bones and absorbers, but lately i decide it can help me in future
-
 // getting acces to canvas
 const canvas = container.children[0];
 const elem = document.querySelector('#screenshot');
@@ -326,7 +250,8 @@ const elem = document.querySelector('#screenshot');
     };
   }());
 
- // changing background "one color" - > HDR - > "one color" - >
+ // changing background "monocolor" - > HDR - > "monocolor" - >
+  var backgroundSwitcher = 0;
   function changeBackground() {
 
     switch(backgroundSwitcher) {
@@ -344,6 +269,7 @@ const elem = document.querySelector('#screenshot');
             backgroundSwitcher = 0;
             break;
     }
+
     render();
   }
 
@@ -372,9 +298,9 @@ const elem = document.querySelector('#screenshot');
     });
   }
 
-//-------------------BUTTONS END---------------------------------------------
 //-------------------BEGIN SPRITE BLOCK--------------------------------------
 //---------------------------------------------------------------------------
+// managing visible otions for sprites
 
  function spineSprites(){
     c_sprite = makeTextSprite( " Шейный отдел ", 
@@ -410,15 +336,6 @@ const elem = document.querySelector('#screenshot');
     //--------------------------------------------------
     
  }  
-
-  function labelingBones(){
-     var C1 =   k_sprite = makeTextSprite( " C1 ", 
-     { fontsize: 18, borderColor: {r:0, g:0, b:0, a:0.0}, backgroundColor: {r:100, g:100, b:100, a:0} } );
-     C1.scale.set(15, 11, 0);
-     C1.position.set(9.5,8,5);
-     scene.add( C1 );
-     
-  }
 
 
 function makeTextSprite( message, parameters )
@@ -471,7 +388,7 @@ function makeTextSprite( message, parameters )
 	texture.needsUpdate = true;
 
 	var spriteMaterial = new THREE.SpriteMaterial( 
-		{ map: texture, useScreenCoordinates: false, alignment: spriteAlignment } );
+		{ map: texture } );
 	var sprite = new THREE.Sprite( spriteMaterial );
 	sprite.scale.set(100,50,1.0);
 	return sprite;	
@@ -492,6 +409,22 @@ function roundRect(ctx, x, y, w, h, r)
     ctx.closePath();
     ctx.fill();
 	ctx.stroke();   
+}
+
+function spriteVisible(boolean) {
+    if (boolean == false) {
+        c_sprite.visible  = false;
+        t_sprite.visible  = false;
+        l_sprite.visible  = false;
+        s_sprite.visible  = false;
+        k_sprite.visible  = false;
+    } else {
+        c_sprite.visible  = true;
+        t_sprite.visible  = true;
+        l_sprite.visible  = true;
+        s_sprite.visible  = true;
+        k_sprite.visible  = true;
+    }
 }
 //---------------------------END SPRITE BLOCK--------------------------------
 

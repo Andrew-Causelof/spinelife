@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Spinlife 3D viewer</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="main.css">
+        <script src="js/three.js"></script>
+        <script src="js/OrbitControls.js"></script>
+		<script src="js/GLTFLoader.js"></script>
+		<script src="js/DRACOLoader.js"></script>
+		<script src="js/RGBELoader.js"></script>
+		<script src="js/jquery-3.5.1.min.js"></script>
+
+	<!--	<link rel="stylesheet" href="./fonts/Oswald-Bold.ttf"> -->
+		
+     <!--   <script src="RoughnessMipmapper.js"></script> -->
+	</head>
+	<body>
+
+		<script>
+			$(window).on("load",function (){
+			    $(".loading").fadeOut(1000);
+			});
+		</script>
+		
+
+		<div class="loading">
+			<div class="load-circle">
+			</div>
+		</div>
+
+	
+		<button class="buttons" id="screenshot" type="button"></button>
+		
+		<button class="buttons" id="hdr" type="button" onclick="changeBackground()"></button>
+
+		<input type="range" min="0" max="100" step="2" oninput="range()" id='range'>
+		
+
+		<script src = 'script.js'></script>	
+
+	</body>
+</html>

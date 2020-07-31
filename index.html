@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Spinlife 3D viewer</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="./css/main.css">
+		<link type="text/css" rel="stylesheet" href="./css/menu.css">
+
+    <!-- three js libraries only -->
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+		<script src="js/GLTFLoader.js"></script>
+		<script src="js/DRACOLoader.js"></script>
+    <script src="js/RGBELoader.js"></script>
+    
+    <!-- jquery library -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    
+    <!-- Font awesome icones -->
+		<script src="https://use.fontawesome.com/9472df701b.js"></script>
+
+
+	</head>
+	<body>
+
+    <!-- loader section -->
+		<script>
+			$(window).on("load",function (){
+			    $(".loading").fadeOut(1000);
+			});
+		</script>
+		
+
+		<div class="loading">
+			<div class="load-circle">
+			</div>
+    </div>
+    <!-- END loader section -->
+
+
+ <!-- MENU SECTION -->
+<div class="leftMenu">
+  <div class="hamburger active">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <ul class="leftMenuList">
+
+    <li>
+      <a href='javascript:;' onclick='document.location.reload(true);'>
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+        <span>ОБНОВИТЬ</span>
+      </a>
+	  </li>
+
+    <li>
+      <a href="#" id="screenshot" >
+        <i class="fa fa-save" aria-hidden="true"></i>
+        <span>СОХРАНИТЬ</span>
+      </a>
+	  </li>
+	
+    <li>
+	  <a href='javascript:;' onclick='changeBackground();'>
+        <i class="fa fa-lightbulb-o"></i>
+        <span>СМЕНИТЬ ФОН</span>
+      </a>
+	  </li>
+
+	<!-- Лечение заболевания - перечисляем виды -->
+    <li>	
+      <a href="#" class="dropdown">
+        <i class=" fa fa-user-md" aria-hidden="true"></i>
+        <span>ЛЕЧЕНИЕ</span>
+      </a>
+      <ul class="dropdownlist">
+        <li>
+          <a href="#">
+            <span>Лечение заболевания</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Лечение заболевания</span>
+          </a>
+        </li>
+      </ul>
+  	</li>
+	<!-- Конец лечения заболевания - перечисляем виды -->
+
+		
+    <li>
+      <a href="#" class="dropdown">
+        <i class="fa fa-wheelchair" aria-hidden="true"></i>
+        <span>ЗАБОЛЕВАНИЯ</span>
+      </a>
+      <ul class="dropdownlist">
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 1</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 2</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 3</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 4</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 5</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span>Заболевание позвоночника 6</span>
+          </a>
+        </li>
+      </ul>
+	</li>
+	
+  </ul>
+</div>
+<!-- END MENU SECTION -->
+
+
+  <input type="range" min="0" max="100" step="2" oninput="range()" id='range'>
+  
+		
+		<script src = './js/menu.js'></script>	
+		<script src = './js/script.js'></script>	
+
+	</body>
+</html>

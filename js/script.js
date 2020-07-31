@@ -356,25 +356,28 @@ const elem = document.querySelector('#screenshot');
     boneLables.push( makeLableForBone("textures/lables/c5.png", 0, 10.4, 3.9) );
     boneLables.push( makeLableForBone("textures/lables/c6.png", 0, 9.6, 3.8) );
     boneLables.push( makeLableForBone("textures/lables/c7.png", 0, 8.9, 3.6) );
-    boneLables.push( makeLableForBone("textures/lables/d1.png", 0, 8.2, 3.4) );
-    boneLables.push( makeLableForBone("textures/lables/d2.png", 0, 7.4, 3.1) );
-    boneLables.push( makeLableForBone("textures/lables/d3.png", 0, 6.6, 2.9) );
-    boneLables.push( makeLableForBone("textures/lables/d4.png", 0, 5.7, 2.6) );
-    boneLables.push( makeLableForBone("textures/lables/d5.png", 0, 4.7, 2.4) );
-    boneLables.push( makeLableForBone("textures/lables/d6.png", 0, 3.6, 2.4) );
-    boneLables.push( makeLableForBone("textures/lables/d7.png", 0, 2.5, 2.5) );
-    boneLables.push( makeLableForBone("textures/lables/d8.png", 0, 1.3, 2.7) );
-    boneLables.push( makeLableForBone("textures/lables/d9.png", 0, 0.1, 2.9) );
-    boneLables.push( makeLableForBone("textures/lables/d10.png", 0, -1.1, 3.2) );
-    boneLables.push( makeLableForBone("textures/lables/d11.png", 0, -2.6, 3.5) );
-    boneLables.push( makeLableForBone("textures/lables/d12.png", 0, -4.0, 3.9) );
+    boneLables.push( makeLableForBone("textures/lables/th1.png", 0, 8.2, 3.4, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th2.png", 0, 7.4, 3.1, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th3.png", 0, 6.6, 2.9, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th4.png", 0, 5.7, 2.6, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th5.png", 0, 4.7, 2.4, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th6.png", 0, 3.6, 2.4, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th7.png", 0, 2.5, 2.5, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th8.png", 0, 1.3, 2.7, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th9.png", 0, 0.1, 2.9, 0.7, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th10.png", 0, -1.1, 3.2, 0.9, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th11.png", 0, -2.6, 3.5, 0.9, 0.4, 0) );
+    boneLables.push( makeLableForBone("textures/lables/th12.png", 0, -4.0, 3.9, 0.9, 0.4, 0) );
     boneLables.push( makeLableForBone("textures/lables/l1.png", 0, -5.4, 4.4) );
     boneLables.push( makeLableForBone("textures/lables/l2.png", 0, -7.1, 4.6) );
     boneLables.push( makeLableForBone("textures/lables/l3.png", 0, -8.6, 4.7) );
     boneLables.push( makeLableForBone("textures/lables/l4.png", 0, -10.2, 4.6) );
     boneLables.push( makeLableForBone("textures/lables/l5.png", 0, -11.9, 4.3) );
-    boneLables.push( makeLableForBone("textures/lables/s.png", 0, -13.9, 3.3) );
-    boneLables.push( makeLableForBone("textures/lables/Co.png", 0, -16.9, 1.0) );
+    boneLables.push( makeLableForBone("textures/lables/s1.png", 0, -13.6, 3.3) );
+    boneLables.push( makeLableForBone("textures/lables/s2.png", 0, -14.9, 2.3) );
+    boneLables.push( makeLableForBone("textures/lables/s3.png", 0, -15.8, 1.6) );
+    boneLables.push( makeLableForBone("textures/lables/s4.png", 0, -16.5, 1.0) );
+    
 
     boneLables.forEach( function (lable) {
         scene.add( lable );
@@ -384,13 +387,13 @@ const elem = document.querySelector('#screenshot');
 
  }
 
- function makeLableForBone(path, x,y,z){
+ function makeLableForBone(path, x,y,z, s1 = 0.6, s2 = 0.4, s3 = 0){
 
     var spriteMap = new THREE.TextureLoader().load( path );
     var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
     var lable = new THREE.Sprite( spriteMaterial );
     lable.position.set(x,y,z);
-    lable.scale.set(0.5, 0.5, 0);
+    lable.scale.set(s1, s2, s3);
     
     return lable;
  }

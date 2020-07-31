@@ -374,6 +374,7 @@ const elem = document.querySelector('#screenshot');
     boneLables.push( makeLableForBone("textures/lables/s2.png", 0, -14.9, 2.3) );
     boneLables.push( makeLableForBone("textures/lables/s3.png", 0, -15.8, 1.6) );
     boneLables.push( makeLableForBone("textures/lables/s4.png", 0, -16.5, 1.0) );
+    boneLables.push( makeLableForBone("textures/lables/Co.png", 0, -17.5, 0.5) );
     
 
     boneLables.forEach( function (lable) {

@@ -216,3 +216,15 @@ h1{
   height:0;
 }
 
+.spine {
+   background-image: url("../icon/bone_2.png");
+   background-size: cover;
+   background-position: center;
+   margin-top: 5%;
+   background-size: auto;
+   background-repeat: no-repeat;
+}
+
+.leftMenuList i.fa {
+    font-size: 35px;
+}
